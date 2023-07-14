@@ -57,7 +57,7 @@ def Update_Mol(data_file, data_sheet_a, data_sheet_b, iupac_file, iupac_sheet, s
 
     i = 1
     for data in data_a:
-        data[0] = new_molecular_weight(data[1], iupac_file, iupac_sheet)
+        data[0] = new_molecular_weight(str(data[1]), iupac_file, iupac_sheet)
         percent = int(i/(len(data_a)+len(data_b))*50)
         print(f'\r[{"#"*percent}{"."*(50-percent)}]\t{i}', end=".")
         i += 1
