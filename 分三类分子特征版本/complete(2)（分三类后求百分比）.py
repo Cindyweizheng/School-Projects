@@ -134,61 +134,61 @@ def percentage_five_seven():
     datas = []
     for i in range(1,4):
         datas.append(read_from_csv(f"D:/ftms数据处理代码/workspace/分三类分子特征版本/result/result(元素比)_data{i}.csv"))
-    Ca = 0
-    Pr = 0
-    Li = 0
-    Ta = 0
-    Lica = 0
-    Un  = 0
-    Co = 0
-    cpa = 0
-    P = 0
-    hupc = 0
-    ac = 0
-    sc = 0
-    total = 0
-    for data in datas:
-        for da in data:
-            total += float(da[2])
-            if 1.5 < float(da[14]) < 2.2 and 0.67 < float(da[13]) < 1.0:
-                Ca += float(da[2])
-            elif 1.5 < float(da[14]) < 2.2 and 0.3 < float(da[13]) < 0.67:
-                Pr += float(da[2])
-            elif 1.5 < float(da[14]) < 2.0 and 0 < float(da[13]) < 0.3:
-                Li += float(da[2])
-            elif 0 < float(da[14]) < 1.5 and 0.67 < float(da[13]) < 1.0:
-                Ta += float(da[2])
-            elif 0.7 < float(da[14]) < 1.5 and 0.1 < float(da[13]) < 0.67:
-                Lica += float(da[2])
-            elif 0.7 < float(da[14]) < 1.5 and 0 < float(da[13]) < 0.1:
-                Un += float(da[2])
-            elif 0.2 < float(da[14]) < 0.7 and 0 < float(da[13]) < 0.67:
-                Co += float(da[2])
-            if float(da[21]) > 0.66:
-                cpa += float(da[2])
-            elif 0.5 < float(da[21]) < 0.66:
-                P += float(da[2])
-            elif float(da[21]) <= 0.5 and float(da[14]) < 1.5:
-                hupc += float(da[2])
-            elif float(da[21]) <= 0.5 and 1.5 < float(da[14]) <2.0 :
-                ac += float(da[2])
-            elif float(da[14]) == 2.0:
-                sc += float(da[2])
+        Ca = 0
+        Pr = 0
+        Li = 0
+        Ta = 0
+        Lica = 0
+        Un  = 0
+        Co = 0
+        cpa = 0
+        P = 0
+        hupc = 0
+        ac = 0
+        sc = 0
+        total = 0
+        for data in datas:
+            for da in data:
+                total += float(da[2])
+                if 1.5 < float(da[14]) < 2.2 and 0.67 < float(da[13]) < 1.0:
+                    Ca += float(da[2])
+                elif 1.5 < float(da[14]) < 2.2 and 0.3 < float(da[13]) < 0.67:
+                    Pr += float(da[2])
+                elif 1.5 < float(da[14]) < 2.0 and 0 < float(da[13]) < 0.3:
+                    Li += float(da[2])
+                elif 0 < float(da[14]) < 1.5 and 0.67 < float(da[13]) < 1.0:
+                    Ta += float(da[2])
+                elif 0.7 < float(da[14]) < 1.5 and 0.1 < float(da[13]) < 0.67:
+                    Lica += float(da[2])
+                elif 0.7 < float(da[14]) < 1.5 and 0 < float(da[13]) < 0.1:
+                    Un += float(da[2])
+                elif 0.2 < float(da[14]) < 0.7 and 0 < float(da[13]) < 0.67:
+                    Co += float(da[2])
+                if float(da[21]) > 0.66:
+                    cpa += float(da[2])
+                elif 0.5 < float(da[21]) < 0.66:
+                    P += float(da[2])
+                elif float(da[21]) <= 0.5 and float(da[14]) < 1.5:
+                    hupc += float(da[2])
+                elif float(da[21]) <= 0.5 and 1.5 < float(da[14]) <2.0 :
+                    ac += float(da[2])
+                elif float(da[14]) == 2.0:
+                    sc += float(da[2])
 
-    results = [['Car', Ca/total],
-        ['Pro', Pr/total],
-        ['Lip', Li/total],
-        ['Tan', Ta/total],
-        ['Lig', Lica/total],
-        ['Uns', Un/total],
-        ['Con', Co/total],
-        [''],
-        ['Cpa', cpa/total],
-        ['Pol', P/total],
-        ['Hupc', hupc/total],
-        ['Ac', ac/total],
-        ['Sc', sc/total]]
-    write_to_csv(results, ['', ''], 'result/result.csv')
+        results = [['Car', Ca/total],
+            ['Pro', Pr/total],
+            ['Lip', Li/total],
+            ['Tan', Ta/total],
+            ['Lig', Lica/total],
+            ['Uns', Un/total],
+            ['Con', Co/total],
+            [''],
+            ['Cpa', cpa/total],
+            ['Pol', P/total],
+            ['Hupc', hupc/total],
+            ['Ac', ac/total],
+            ['Sc', sc/total]]
+        write_to_csv(results, ['', ''], f'result/result{i}.csv')
 
 
 def percentage_element():
@@ -196,38 +196,38 @@ def percentage_element():
     datas = []
     for i in range(1,4):
         datas.append(read_from_excel(f"D:/ftms数据处理代码/workspace/分三类分子特征版本/data{i}.xlsx","Sheet1"))
-    cho = []
-    chon = []
-    chos = []
-    chons = []
-    cho_strength = 0
-    chos_strength = 0
-    chon_strength = 0
-    chons_strength = 0
-    total_strength = 0
-    for data in datas:
-        for da in data:
-            total_strength += float(da[2])
-            result = get_elements(da[1])
-            if len(result) == 6:
-                cho.append(da)
-                cho_strength += float(da[2])
-            elif len(result) == 10:
-                chons.append(da)
-                chons_strength += float(da[2])
-            else:
-                if result[6] == 'S':
-                    chos.append(da)
-                    chos_strength += float(da[2])
+        cho = []
+        chon = []
+        chos = []
+        chons = []
+        cho_strength = 0
+        chos_strength = 0
+        chon_strength = 0
+        chons_strength = 0
+        total_strength = 0
+        for data in datas:
+            for da in data:
+                total_strength += float(da[2])
+                result = get_elements(da[1])
+                if len(result) == 6:
+                    cho.append(da)
+                    cho_strength += float(da[2])
+                elif len(result) == 10:
+                    chons.append(da)
+                    chons_strength += float(da[2])
                 else:
-                    chon.append(da)
-                    chon_strength += float(da[2])
+                    if result[6] == 'S':
+                        chos.append(da)
+                        chos_strength += float(da[2])
+                    else:
+                        chon.append(da)
+                        chon_strength += float(da[2])
 
-    results = [['cho', cho_strength / total_strength],
-        ['chon', chon_strength / total_strength],
-        ['chos', chos_strength / total_strength],
-        ['chons', chons_strength / total_strength]]
-    add_to_csv(results, 'result/result.csv')
+        results = [['cho', cho_strength / total_strength],
+            ['chon', chon_strength / total_strength],
+            ['chos', chos_strength / total_strength],
+            ['chons', chons_strength / total_strength]]
+        add_to_csv(results, f'result/result{i}.csv')
 
 if __name__ == '__main__':
     element_division()
