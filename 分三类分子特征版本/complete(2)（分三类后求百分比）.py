@@ -3,10 +3,12 @@ import re
 import pandas as pd
 import numpy as np
 
+
 def read_from_excel(filename, sheet_name):
     reader = pd.ExcelFile(filename)
     dataframe = reader.parse(sheet_name)
     return np.array(dataframe)
+
 
 def read_from_csv(filename):
     csvfile = open(filename,"r")
@@ -19,6 +21,15 @@ def read_from_csv(filename):
     csvfile.close()
     return result
 
+
+def add_to_csv(data, file):
+    with open(file, "a+") as f:
+        csv_writer = csv.writer(f)
+        for da in data:
+            csv_writer.writerow(da)
+        f.close()
+
+
 def write_to_csv(data, header, file):
     with open(file, "w", newline="")as f:
         writer = csv.writer(f)
@@ -26,15 +37,16 @@ def write_to_csv(data, header, file):
         count = 1
         for da in data:
             writer.writerow(da)
-
             percent = int(count / len(data) * 50)
             print(f'\r[{"#" * percent}{"." * (50 - percent)}]\t{count}/{len(data)}', end=".")
             count += 1
         print()
         f.close()
 
+
 def get_elements(molecular):
     return re.findall(r'[A-Z][a-z]*|[0-9]+',molecular)
+
 
 def find_ele(data):
     final_ele = [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -163,19 +175,20 @@ def percentage_five_seven():
             elif float(da[14]) == 2.0:
                 sc += float(da[2])
 
-    print(f'Car:\t{Ca/total}')
-    print(f'Pro:\t{Pr/total}')
-    print(f'Lip:\t{Li/total}')
-    print(f'Tan:\t{Ta/total}')
-    print(f'Lig:\t{Lica/total}')
-    print(f'Uns:\t{Un/total}')
-    print(f'Con:\t{Co/total}')
-    print()
-    print(f'Cpa:\t{cpa/total}')
-    print(f'Pol:\t{P/total}')
-    print(f'Hupc:\t{hupc/total}')
-    print(f'Ac:\t\t{ac/total}')
-    print(f'Sc:\t\t{sc/total}')
+    results = [['Car', Ca/total],
+        ['Pro', Pr/total],
+        ['Lip', Li/total],
+        ['Tan', Ta/total],
+        ['Lig', Lica/total],
+        ['Uns', Un/total],
+        ['Con', Co/total],
+        [''],
+        ['Cpa', cpa/total],
+        ['Pol', P/total],
+        ['Hupc', hupc/total],
+        ['Ac', ac/total],
+        ['Sc', sc/total]]
+    write_to_csv(results, ['', ''], 'result/result.csv')
 
 
 def percentage_element():
@@ -210,10 +223,11 @@ def percentage_element():
                     chon.append(da)
                     chon_strength += float(da[2])
 
-    print(f'cho:\t\t{cho_strength / total_strength}')
-    print(f'chon:\t\t{chon_strength / total_strength}')
-    print(f'chos:\t\t{chos_strength / total_strength}')
-    print(f'chons:\t\t{chons_strength / total_strength}')
+    results = [['cho', cho_strength / total_strength],
+        ['chon', chon_strength / total_strength],
+        ['chos', chos_strength / total_strength],
+        ['chons', chons_strength / total_strength]]
+    add_to_csv(results, 'result/result.csv')
 
 if __name__ == '__main__':
     element_division()
