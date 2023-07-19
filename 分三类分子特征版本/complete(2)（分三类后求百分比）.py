@@ -4,10 +4,10 @@ import pandas as pd
 import numpy as np
 
 
-def read_from_excel(filename, sheet_name):
-    reader = pd.ExcelFile(filename)
-    dataframe = reader.parse(sheet_name)
-    return np.array(dataframe)
+# def read_from_excel(filename, sheet_name):
+#     reader = pd.ExcelFile(filename)
+#     dataframe = reader.parse(sheet_name)
+#     return np.array(dataframe)
 
 
 def read_from_csv(filename):
@@ -112,12 +112,12 @@ def count_result(data):
     else:
         data.append(0)
 
-def element_division():
+def element_division(n):
     print("work start!")
     datas = []
     names = []
-    for i in range(1,4):
-        datas.append(read_from_excel(f"D:/ftms数据处理代码/workspace/分三类分子特征版本/data{i}.xlsx","Sheet1"))
+    for i in range(1,n+1):
+        datas.append(read_from_csv(f"data/sheet{i}.csv"))
         names.append(f'data{i}')
     for data,name in zip(datas,names):
         result = []
@@ -126,14 +126,14 @@ def element_division():
             count_result(ele_get)
             result.append(list(da[0:3:])+ele_get)
         header = ["weight", "molecular", "strength", "C", "H", "O", "N", "S", "P", "Cl", "Br", "I", "DBE", "O/C", "H/C", "N/C", "S/C", "P/C", "Cl/C", "Br/C", "I/C", "Almod", "NOSC", "X/C", "DBE-O", "DBE/C"]
-        file = "D:/ftms数据处理代码/workspace/分三类分子特征版本/result/result(元素比)_"+ name +".csv"
+        file = "result/result(元素比)_"+ name +".csv"
         write_to_csv(result, header, file)
 
-def percentage_five_seven():
+def percentage_five_seven(n):
     print("work start!")
     datas = []
-    for i in range(1,4):
-        datas.append(read_from_csv(f"D:/ftms数据处理代码/workspace/分三类分子特征版本/result/result(元素比)_data{i}.csv"))
+    for i in range(1,n+1):
+        datas.append(read_from_csv(f"result/result(元素比)_data{i}.csv"))
         Ca = 0
         Pr = 0
         Li = 0
@@ -187,15 +187,16 @@ def percentage_five_seven():
             ['Pol', P/total],
             ['Hupc', hupc/total],
             ['Ac', ac/total],
-            ['Sc', sc/total]]
+            ['Sc', sc/total],
+            ['']]
         write_to_csv(results, ['', ''], f'result/result{i}.csv')
 
 
-def percentage_element():
+def percentage_element(n):
     print("work start!")
     datas = []
-    for i in range(1,4):
-        datas.append(read_from_excel(f"D:/ftms数据处理代码/workspace/分三类分子特征版本/data{i}.xlsx","Sheet1"))
+    for i in range(1,n+1):
+        datas.append(read_from_csv(f"result/result(元素比)_data{i}.csv"))
         cho = []
         chon = []
         chos = []
@@ -230,8 +231,9 @@ def percentage_element():
         add_to_csv(results, f'result/result{i}.csv')
 
 if __name__ == '__main__':
-    element_division()
+    n = 1
+    element_division(n)
     print("--------------------------------")
-    percentage_five_seven()
+    percentage_five_seven(n)
     print("--------------------------------")
-    percentage_element()
+    percentage_element(n)
