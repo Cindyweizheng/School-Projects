@@ -73,6 +73,8 @@ def find_ele(data):
             final_ele[8] = int(list_ele[i+1])
     # print(final_ele)
     return final_ele
+
+
 def count_result(data):
     # DBE
     data.append((2*data[0]+data[3]+data[5]-data[1]-(data[6]+data[7]+data[8])+2)/2)
@@ -112,6 +114,7 @@ def count_result(data):
     else:
         data.append(0)
 
+
 def element_division(n):
     print("work start!")
     datas = []
@@ -128,6 +131,7 @@ def element_division(n):
         header = ["weight", "molecular", "strength", "C", "H", "O", "N", "S", "P", "Cl", "Br", "I", "DBE", "O/C", "H/C", "N/C", "S/C", "P/C", "Cl/C", "Br/C", "I/C", "Almod", "NOSC", "X/C", "DBE-O", "DBE/C"]
         file = "result/result(元素比)_"+ name +".csv"
         write_to_csv(result, header, file)
+
 
 def percentage_five_seven(n):
     print("work start!")
@@ -229,6 +233,7 @@ def percentage_element(n):
             ['chos', chos_strength / total_strength],
             ['chons', chons_strength / total_strength]]
         add_to_csv(results, f'result/result{i}.csv')
+
 
 if __name__ == '__main__':
     n = 1
