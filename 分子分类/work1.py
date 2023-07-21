@@ -2,12 +2,19 @@ import csv
 import re
 import pandas as pd
 import numpy as np
+import os
 
 
 def read_from_excel(filename, sheet_name):
     reader = pd.ExcelFile(filename)
     dataframe = reader.parse(sheet_name)
     return np.array(dataframe)
+
+
+def mkdir(path):
+    folder = os.path.exists(path)
+    if not folder:
+        os.makedirs(path)
 
 
 # def read_from_csv(filename):
@@ -34,6 +41,11 @@ def write_to_csv(data, header, file):
             count += 1
         print()
         f.close()
+
+
+def get_elements(molecular):
+    str = ''
+    return str.join(re.findall(r'[A-Z][a-z]*', molecular))
 
 
 def percentage_element(n):
@@ -64,5 +76,30 @@ def percentage_element(n):
         write_to_csv(others, [''], f'result/{i}_others.csv')
 
 
+def percentage_element_new(n):
+    print("work start!")
+    for i in range(1,n+1):
+        datas = read_from_excel(f"data/da{i}.xlsx", "Sheet1")
+        file_name = f'result/da{i}'
+        mkdir(file_name)
+        total = []
+        for data in datas:
+            result = get_elements(data[6])
+            data = np.append(data, result)
+            sig = 0
+            for to in total:
+                if result == to[0]:
+                    to.append(data)
+                    sig += 1
+            if sig == 0:
+                total.append([result, data])
+        for to in total:
+            name = to[0]
+            to.pop(0)
+            write_to_csv(to, [''], f'{file_name}/{name}.csv')
+
+
 if __name__ == "__main__":
-    percentage_element(1)
+    # percentage_element(1)
+    # print(get_elements("C11H2O"))
+    percentage_element_new(1)
