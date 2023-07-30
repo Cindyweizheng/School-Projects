@@ -19,6 +19,12 @@ def add_to_csv(data, file):
     df.to_csv(file, mode='a', header=False)
 
 
+def mkdir(path):
+    folder = os.path.exists(path)
+    if not folder:
+        os.makedirs(path)
+
+
 def read_from_csv(filename):
     csvfile = open(filename, "r")
     reader = csv.reader(csvfile)
