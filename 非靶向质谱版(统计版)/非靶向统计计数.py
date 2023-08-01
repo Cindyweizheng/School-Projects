@@ -1,4 +1,5 @@
 import csv
+import numba
 import pandas as pd
 import datetime
 import numpy as np
@@ -6,6 +7,7 @@ from collections import Counter
 import re
 import os
 
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 def read_from_excel(file_name, sheet_name):
     reader = pd.ExcelFile(file_name)
@@ -34,9 +36,9 @@ def write_to_csv(file, header, data):
             writer.writerow(d)
 
 
-def new_molecular_weight(data, iupac_file, iupac_sheet):
+# @numba.jit(nopython=True)
+def new_molecular_weight(data, data_iupac):
     data_mo = re.findall(r"[A-Z][a-z]*|[0-9]+", data)
-    data_iupac = read_from_excel(iupac_file, iupac_sheet)
     result = 0.0
     for i in range(0, len(data_mo), 2):
         for data_i in data_iupac:
@@ -49,16 +51,16 @@ def Update_Mol(data_file, data_sheet_a, data_sheet_b, iupac_file, iupac_sheet, s
     print("Start update data!")
     data_a = read_from_excel(data_file, data_sheet_a)
     data_b = read_from_excel(data_file, data_sheet_b)
-
+    data_iupac = read_from_excel(iupac_file, iupac_sheet)
     i = 1
     len_data = len(data_a)+len(data_b)
     for data in data_a:
-        data[1] = new_molecular_weight(data[0], iupac_file, iupac_sheet)
+        data[1] = new_molecular_weight(data[0], data_iupac)
         percent = int(i/len_data*50)
         print(f'\r[{"#"*percent}{"."*(50-percent)}]\t{percent*2}%', end=".")
         i += 1
     for data in data_b:
-        data[1] = new_molecular_weight(data[0], iupac_file, iupac_sheet)
+        data[1] = new_molecular_weight(data[0], data_iupac)
         percent = int(i/len_data*50)
         print(f'\r[{"#"*percent}{"."*(50-percent)}]\t{percent*2}%', end=".")
         i += 1
@@ -118,9 +120,10 @@ def main(n):
                 print(f'\r[{"#" * percent}{"." * (50 - percent)}]\t{percent * 2}%', end=".")
         print()
         result_count2 = np.array(list(set([tuple(t) for t in to_list(dict(Counter(result2)))])))
-        result_count2 = sorted(result_count2, key=(lambda x:x[1]))
+        result_count2 = sorted(result_count2, key=(lambda x:x[1]), reverse=True)
         # print(len(result_count2))
 
+        '''
         print("start writing count!")
         count = len(result)/1000000
         if count%1 != 0:
@@ -133,6 +136,7 @@ def main(n):
             data = result[i*1000000:(i+1)*1000000:]
             write_to_csv(file, header, data)
         print("count write completed!")
+        '''
 
         print("start writing result!")
         count = len(result_count2)/1000000
@@ -151,6 +155,8 @@ def main(n):
 if __name__ == '__main__':
     start_time = datetime.datetime.now()
     n = 1
+    # data_iupac = read_from_excel('excelfile/data/iupac.xlsx', 'Sheet1')
+    # print(data_iupac)
     main(n)
     end_time = datetime.datetime.now()
     run_time = end_time - start_time
