@@ -36,6 +36,26 @@ def write_to_csv(file, header, data):
             writer.writerow(d)
 
 
+def Count_result(datas, save_dir):
+    results = []
+    count = 1
+    len_datas = len(datas)
+    for data in datas:
+        if count % 50 == 0:
+            percent = int(count / len_datas * 50)
+            print(f'\r[{"#" * percent}{"." * (50 - percent)}]\t{percent * 2}%\t{count}/{len_datas}', end=".")
+        count += 1
+        for result in results:
+            if data[6] == result[0]:
+                result.append(data)
+                continue
+        results.append([data[6], data])
+    for result in results:
+        name = result[0]
+        result.pop(0)
+        write_to_csv(f'{save_dir}/{name}.csv', [""], result)
+
+
 # @numba.jit(nopython=True)
 def new_molecular_weight(data, data_iupac):
     data_mo = re.findall(r"[A-Z][a-z]*|[0-9]+", data)
@@ -92,9 +112,8 @@ def main(n):
         new_data_file = f'{temp_dir}/new_data{i}.xlsx'
         save_dir = f'excelfile/result/{i}'
         mkdir(save_dir)
-        choice = input("如果你是第一次启动本程序没有换算后的数据请按enter键继续，\n如果你已经运行一次，并且有换算后的数据请输入c并回车跳过分子量换算步骤(这会为你节约大量的时间)\n:")
-        if choice != "c" and choice != "C":
-            Update_Mol(org_data_file, 'A', 'B', 'excelfile/data/iupac.xlsx', 'Sheet1', f'{temp_dir}/new_data{i}.xlsx')
+
+        Update_Mol(org_data_file, 'A', 'B', 'excelfile/data/iupac.xlsx', 'Sheet1', f'{temp_dir}/new_data{i}.xlsx')
         data_A = read_from_excel(new_data_file, 'A')
         data_B = read_from_excel(new_data_file, 'B')
         # print(len(data_A))
@@ -122,6 +141,8 @@ def main(n):
         result_count2 = np.array(list(set([tuple(t) for t in to_list(dict(Counter(result2)))])))
         result_count2 = sorted(result_count2, key=(lambda x:x[1]), reverse=True)
         # print(len(result_count2))
+
+        Count_result(result, save_dir)
 
         '''
         print("start writing count!")
