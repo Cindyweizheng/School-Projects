@@ -36,24 +36,44 @@ def write_to_csv(file, header, data):
             writer.writerow(d)
 
 
-def Count_result(datas, save_dir):
+def count_result(datas, save_dir):
     results = []
     count = 1
-    len_datas = len(datas)
-    for data in datas:
-        if count % 50 == 0:
+    len_datas = len(datas[0:50000:])
+    for data in datas[0:50000:]:
+        if count % 50 == 0 or count == len_datas:
             percent = int(count / len_datas * 50)
             print(f'\r[{"#" * percent}{"." * (50 - percent)}]\t{percent * 2}%\t{count}/{len_datas}', end=".")
         count += 1
         for result in results:
-            if data[6] == result[0]:
+            if round(data[6], 6) == result[0]:
                 result.append(data)
                 continue
-        results.append([data[6], data])
+        results.append([round(data[6], 6), data])
+    print()
+    mkdir(f'{save_dir}/result')
     for result in results:
         name = result[0]
         result.pop(0)
-        write_to_csv(f'{save_dir}/{name}.csv', [""], result)
+        write_to_csv(f'{save_dir}/result/{name}.csv', [""], result)
+
+
+def count_result_manual(datas, save_dir):
+    result = [format(eval(input("please input targit num:")), ".7f")]
+    count = 1
+    len_datas = len(datas)
+    for data in datas:
+        if count % 50 == 0 or count == len_datas:
+            percent = int(count / len_datas * 50)
+            print(f'\r[{"#" * percent}{"." * (50 - percent)}]\t{percent * 2}%\t{count}/{len_datas}', end=".")
+        count += 1
+        if format(data[6], ".7f") == result[0]:
+            result.append(data)
+    print()
+    mkdir(f'{save_dir}')
+    name = result[0]
+    result.pop(0)
+    write_to_csv(f'{save_dir}/{name}.csv', [""], result)
 
 
 # @numba.jit(nopython=True)
@@ -125,24 +145,18 @@ def main(n):
         for data_a in data_A:
             for data_b in data_B:
                 result.append([data_b[0], data_b[1], data_b[2], data_a[0], data_a[1], data_b[2], data_b[1] - data_a[1]])
-                result2.append(data_b[1] - data_a[1])
+                result2.append(format((data_b[1] - data_a[1]), '.7f'))
                 percent = int(count / data_len * 50)
                 count += 1
             print(f'\r[{"#"*percent}{"."*(50-percent)}]\t{percent*2}%', end=".")
         print()
 
-        r2_len = len(result2)
-        for i in range(r2_len):
-            result2[i] = round(result2[i], 7)
-            percent = int((i+1)/r2_len*50)
-            if i%50==0 or i==r2_len-1:
-                print(f'\r[{"#" * percent}{"." * (50 - percent)}]\t{percent * 2}%', end=".")
-        print()
         result_count2 = np.array(list(set([tuple(t) for t in to_list(dict(Counter(result2)))])))
         result_count2 = sorted(result_count2, key=(lambda x:x[1]), reverse=True)
         # print(len(result_count2))
 
-        Count_result(result, save_dir)
+        # count_result(result, save_dir)
+        count_result_manual(result, save_dir)
 
         '''
         print("start writing count!")
@@ -176,8 +190,6 @@ def main(n):
 if __name__ == '__main__':
     start_time = datetime.datetime.now()
     n = 1
-    # data_iupac = read_from_excel('excelfile/data/iupac.xlsx', 'Sheet1')
-    # print(data_iupac)
     main(n)
     end_time = datetime.datetime.now()
     run_time = end_time - start_time
