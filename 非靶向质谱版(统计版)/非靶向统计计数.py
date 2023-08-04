@@ -144,7 +144,7 @@ def main(n):
         count = 1
         for data_a in data_A:
             for data_b in data_B:
-                result.append([data_b[0], data_b[1], data_b[2], data_a[0], data_a[1], data_b[2], data_b[1] - data_a[1]])
+                result.append([data_b[0], data_b[1], data_b[2], data_a[0], data_a[1], data_a[2], data_b[1] - data_a[1]])
                 result2.append(format((data_b[1] - data_a[1]), '.7f'))
                 percent = int(count / data_len * 50)
                 count += 1
