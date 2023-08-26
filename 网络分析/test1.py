@@ -15,7 +15,8 @@ def read_from_csv(filename):
 
 
 if __name__ == "__main__":
-    datas = read_from_csv("边.csv")
+    # datas = read_from_csv("边.csv")
+    datas = read_from_csv("node.csv")
     datas_for_graph = []
     datas_total = []
     for data in datas:
@@ -25,6 +26,7 @@ if __name__ == "__main__":
     datas_total = list(set(datas_total))
     g = ig.Graph()
     g.add_vertices(datas_total)
+    g.vs['label'] = datas_total
     g.add_edges(datas_for_graph)
     ig.plot(g, "test.png")
     print("度", end=':')
