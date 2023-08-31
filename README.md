@@ -1,4 +1,4 @@
-# Others-project
+# School-Project
 <h2>一、画图</h2>
 
 1.变形vk图：画个跟这个一样的图，就是按这些不同分组的数据画
