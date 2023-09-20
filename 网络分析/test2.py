@@ -28,15 +28,5 @@ if __name__ == "__main__":
     g.add_vertices(datas_total)
     g.vs['label'] = datas_total
     g.add_edges(datas_for_graph)
-
     layout = g.layout_fruchterman_reingold()
-    ig.plot(g, layout=layout, target="test1.png")
-    
-    print("度", end=':')
-    print(g.degree())
-    ebs = g.edge_betweenness()
-    print("中介中心性", end=':')
-    print(ebs)
-    max_eb = max(ebs)
-    print("中介中心性较高的边", end=":")
-    print([g.es[idx].tuple for idx, eb in enumerate(ebs) if eb == max_eb])
+    ig.plot(g, layout=layout, target="test2.png")
