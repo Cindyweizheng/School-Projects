@@ -9,6 +9,12 @@ def get_elements(molecular):
     return str.join(re.findall(r'[A-Z][a-z]*', molecular))
 
 
+def switch_ele(data, n, m):
+    data_temp = data[n]
+    data[n] = data[m]
+    data[m] = data_temp
+
+
 def percentage_element(n):
     print("work start!")
     for i in range(1,n+1):
@@ -26,6 +32,15 @@ def percentage_element(n):
                     sig += 1
             if sig == 0:
                 total.append([result, data])
+        for j in range(len(total)):
+            if total[j][0] == "CHO":
+                switch_ele(total, j, 0)
+            if total[j][0] == "CHNO":
+                switch_ele(total, j, 1)
+            if total[j][0] == "CHOS":
+                switch_ele(total, j, 2)
+            if total[j][0] == "CHNOS":
+                switch_ele(total, j, 3)
         print(f"请注意da{i}结果中将会出现{len(total)}个sheet！")
         wb = Workbook()
         ws = wb.active
