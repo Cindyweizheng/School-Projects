@@ -41,6 +41,8 @@ def percentage_element(n):
                 switch_ele(total, j, 2)
             if total[j][0] == "CHNOS":
                 switch_ele(total, j, 3)
+        total[1][0] = "CHON"
+        total[3][0] = "CHONS"
         print(f"请注意da{i}结果中将会出现{len(total)}个sheet！")
         wb = Workbook()
         ws = wb.active
