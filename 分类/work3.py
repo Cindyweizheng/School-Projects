@@ -37,15 +37,16 @@ def mkdir(path):
 def Count_data(datas):
     result = []
     for data in datas:
-        sig = 0
+        # sig = 0
         for res in result:
             if res[0] == data[35]:
                 res.append(data)
-                sig = 1
+                # sig = 1
                 break
-        if sig == 1:
-            continue
-        result.append([data[35], data])
+        # if sig == 1:
+        #     continue
+        else:
+            result.append([data[35], data])
     return result
 
 
@@ -110,8 +111,10 @@ def main(data_file, i):
             data.append(f"N{data[9]}O{data[10]}")
         elif eval(data[11]) != 0 and eval(data[9]) == 0:
             data.append(f"S{data[11]}O{data[10]}")
-        else :
+        elif data[9] == 0 and data[11] == 0 and data[10] != 0:
             data.append(f"O{data[10]}")
+        else:
+            data.append("others")
     # print(len(datas[0]))
     count_datas = Count_data(datas)
     result_all = []
