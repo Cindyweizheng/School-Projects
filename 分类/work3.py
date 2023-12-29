@@ -37,15 +37,16 @@ def mkdir(path):
 def Count_data(datas):
     result = []
     for data in datas:
-        sig = 0
+        # sig = 0
         for res in result:
             if res[0] == data[35]:
                 res.append(data)
-                sig = 1
+                # sig = 1
                 break
-        if sig == 1:
-            continue
-        result.append([data[35], data])
+        # if sig == 1:
+        #     continue
+        else:
+            result.append([data[35], data])
     return result
 
 
