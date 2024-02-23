@@ -75,5 +75,5 @@ https://zhuanlan.zhihu.com/p/426397948
 
 
 <h2>七、画数据图</h2>
-![5bd4e7524ba193e7f47503254741db2](https://github.com/lmq14159/School-Projects/assets/82321147/f85aa7d7-96e2-48ee-9453-335e97dbdd87)
-数据文件中前面是4个框的边界线的范围，后面是在几个框组合上画的点图的数据
+数据文件中前面是4个框的边界线的范围，后面是在几个框组合上画的点图的数据![图例](https://github.com/lmq14159/School-Projects/assets/82321147/25cad5a7-e219-4682-b3d6-d3852964649b)
+
