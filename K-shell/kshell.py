@@ -23,7 +23,7 @@ def calculate_ki_ni(graph):
 
 def calculate_influence_coefficients(ki, ni):
     # 根据公式μi=K(i)N(i)计算每个节点的影响系数
-    return {node: ki[node] * ni[node] for node in ki}
+    return {node: ki[node] / ni[node] for node in ki}
 
 
 def calculate_di(ki, ni):
